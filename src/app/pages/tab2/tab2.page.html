@@ -1,0 +1,26 @@
+<ion-header [translucent]="true" mode="ios" class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>
+      Encabezados
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" mode="ios" class="ion-no-border">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Encabezados</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-segment value="pizza" (ionChange)="segmentChanged($event)"
+               scrollable="true"
+               mode="md"
+               [value]="encabezadoSelected">
+    <ion-segment-button *ngFor="let encabezado of encabezados" [value]="encabezado">
+      <ion-label class="ion-text-capitalize">{{ encabezado }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <app-articles [articles]="articles"> </app-articles>
+</ion-content>
