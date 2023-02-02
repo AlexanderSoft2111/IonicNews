@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { StorageService } from '../../services/storage.service';
+import { Article } from '../../interfaces/index';
 
 @Component({
   selector: 'app-tab3',
@@ -7,6 +9,11 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
-  constructor() {}
+  //Accediendo a los articulos mediante un get para obtener los cambios en vivo del arreglo 
+  get articles(): Article[]{
+    return this.storageService.getArticles;
+  }
+
+  constructor(private storageService: StorageService) {}
 
 }
