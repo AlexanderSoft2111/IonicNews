@@ -52,14 +52,24 @@ export class ArticleComponent implements OnInit {
         role: 'cancel' 
       }
     ]
+    //Boton para compartir moviles
     const shareBtn: ActionSheetButton = {
-        text: 'Compartir',
-        icon: 'share-outline',
-        handler: () => this.onShareArticle() 
+      text: 'Compartir',
+      icon: 'share-outline',
+      handler: () => this.onShareArticle() 
     }
     
-    if(this.platform.is('capacitor')){
+    //Boton para compartir mweb
+    const shareBtnBrowser: ActionSheetButton = {
+      text: 'Compartir',
+      icon: 'share-outline',
+      handler: () => this.onShareArticleWeb() 
+    }
+
+    if(this.platform.is('cordova')){
       normalBtns.unshift(shareBtn); //Agregando el boton al arreglo de botones si se esta corriendo la app en capacitor
+    } else {
+      normalBtns.unshift(shareBtnBrowser);
     }
 
     const actionSheet = await this.actionCrl.create({
@@ -82,6 +92,8 @@ export class ArticleComponent implements OnInit {
         url: url,
         dialogTitle: description,
       });
+    } else {
+      console.log('no soporta la funcionalidad de compartir el navegador');
     }
 
   }
@@ -90,4 +102,15 @@ export class ArticleComponent implements OnInit {
    this.storageService.saveRemoveArticle(this.article!);
   }
 
+  onShareArticleWeb(){
+    if (navigator.share) {
+      navigator.share({
+        title: this.article?.title,
+        text: this.article?.description,
+        url: this.article?.url,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    }
+  }
 }

@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { storedArticlesByCategory } from '../data/mock-news';
 import { Article, ArticlesByCategoryAndPage, NewsTopHeadline } from '../interfaces';
+
+
 
 const apiKey: string = environment.apiKeyNews;
 const apiUrl: string = environment.apiUrl;
@@ -12,7 +15,7 @@ const apiUrl: string = environment.apiUrl;
 })
 export class NewService {
 
-  articlesByCategoryAndPage: ArticlesByCategoryAndPage = {}; //objeto para cargar las categorias
+  articlesByCategoryAndPage: ArticlesByCategoryAndPage = <ArticlesByCategoryAndPage>storedArticlesByCategory ; //objeto para cargar las categorias y colocar el tipo
 
   constructor(private http: HttpClient) { }
 
@@ -34,6 +37,8 @@ export class NewService {
   }
 
   getNewHeadlinesByCategory(categoria: string, loadMore: boolean = false):Observable<Article[]>{
+    //Se realiza este cambio para tener los articulos cargados sin consultar en internet
+    return of(this.articlesByCategoryAndPage[categoria].articles); //Se devuelve el arreglo convirtiendole en un observable gracias al of
 
     if(loadMore){
       return this.getArticlesByCategory(categoria); // si necesita cargar mas productos
